@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "edbcfbc5c6e558186ff6"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "5d49a1ae26818263b1ec"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -11482,6 +11482,9 @@
 	      // has previous sibling and isn't at max depth
 	      if (itemIndex > 0 && newDepth <= maxDepth) {
 	        var prevSibling = this.getItemByPath(pathFrom.slice(0, -1).concat(itemIndex - 1));
+	
+	        // eslint-disable-next-line no-console
+	        console.log('prevSibling', prevSibling);
 	
 	        if (!prevSibling.childrenEnabled) {
 	          return;

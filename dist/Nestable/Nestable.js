@@ -363,6 +363,9 @@ var Nestable = function (_Component) {
       if (itemIndex > 0 && newDepth <= maxDepth) {
         var prevSibling = this.getItemByPath(pathFrom.slice(0, -1).concat(itemIndex - 1));
 
+        // eslint-disable-next-line no-console
+        console.log('prevSibling', prevSibling);
+
         if (!prevSibling.childrenEnabled) {
           return;
         }

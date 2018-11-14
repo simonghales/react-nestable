@@ -187,6 +187,9 @@ class Nestable extends Component {
     if (itemIndex > 0 && newDepth <= maxDepth) {
       const prevSibling = this.getItemByPath(pathFrom.slice(0, -1).concat(itemIndex - 1));
 
+      // eslint-disable-next-line no-console
+      console.log('prevSibling', prevSibling);
+
       if (!prevSibling.childrenEnabled) {
         return;
       }
