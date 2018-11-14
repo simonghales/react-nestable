@@ -206,9 +206,10 @@ var Nestable = function (_Component) {
       // if collapsed by default
       // and move last (by count) child
       // remove parent node from list of open nodes
+      var parent = _this.getItemByPath(pathFrom.slice(0, -1));
+
       var collapseProps = {};
       if (collapsed && pathFrom.length > 1) {
-        var parent = _this.getItemByPath(pathFrom.slice(0, -1));
         if (parent[childrenProp].length == 1) {
           collapseProps = _this.onToggleCollapse(parent, true);
         }
@@ -361,6 +362,10 @@ var Nestable = function (_Component) {
       // has previous sibling and isn't at max depth
       if (itemIndex > 0 && newDepth <= maxDepth) {
         var prevSibling = this.getItemByPath(pathFrom.slice(0, -1).concat(itemIndex - 1));
+
+        if (!prevSibling.childrenEnabled) {
+          return;
+        }
 
         // previous sibling is not collapsed
         if (!prevSibling[childrenProp].length || !this.isCollapsed(prevSibling)) {

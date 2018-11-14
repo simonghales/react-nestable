@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "7270b742ec22bfa4664a"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "edbcfbc5c6e558186ff6"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -11326,9 +11326,10 @@
 	      // if collapsed by default
 	      // and move last (by count) child
 	      // remove parent node from list of open nodes
+	      var parent = _this.getItemByPath(pathFrom.slice(0, -1));
+	
 	      var collapseProps = {};
 	      if (collapsed && pathFrom.length > 1) {
-	        var parent = _this.getItemByPath(pathFrom.slice(0, -1));
 	        if (parent[childrenProp].length == 1) {
 	          collapseProps = _this.onToggleCollapse(parent, true);
 	        }
@@ -11481,6 +11482,10 @@
 	      // has previous sibling and isn't at max depth
 	      if (itemIndex > 0 && newDepth <= maxDepth) {
 	        var prevSibling = this.getItemByPath(pathFrom.slice(0, -1).concat(itemIndex - 1));
+	
+	        if (!prevSibling.childrenEnabled) {
+	          return;
+	        }
 	
 	        // previous sibling is not collapsed
 	        if (!prevSibling[childrenProp].length || !this.isCollapsed(prevSibling)) {
@@ -11883,8 +11888,10 @@
 	
 	      var Handler = void 0;
 	
+	      var classes = item.classes ? item.classes : '';
+	
 	      var itemProps = {
-	        className: (0, _classnames2.default)("nestable-item" + (isCopy ? '-copy' : ''), "nestable-item" + (isCopy ? '-copy' : '') + '-' + item.id, {
+	        className: (0, _classnames2.default)("nestable-item" + (isCopy ? '-copy' : ''), "nestable-item" + (isCopy ? '-copy' : '') + '-' + item.id, [classes], {
 	          'is-dragging': isDragging
 	        })
 	      };
@@ -12029,20 +12036,26 @@
 	
 	var items = [{
 	  id: 0,
-	  text: 'Andy'
+	  text: 'Andy',
+	  childrenEnabled: true,
+	  classes: 'highlighted'
 	}, {
 	  id: 1,
 	  text: 'Harry',
+	  childrenEnabled: true,
 	  children: [{
 	    id: 2,
-	    text: 'David'
+	    text: 'David',
+	    childrenEnabled: false
 	  }]
 	}, {
 	  id: 3,
 	  text: 'Lisa',
+	  childrenEnabled: true,
 	  children: [{
 	    id: 4,
-	    text: 'Richard'
+	    text: 'Richard',
+	    childrenEnabled: true
 	  }]
 	}];
 	

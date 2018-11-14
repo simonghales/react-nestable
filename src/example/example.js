@@ -23,25 +23,31 @@ const handlerStyles = {
 const items = [
   {
     id: 0,
-    text: 'Andy'
+    text: 'Andy',
+    childrenEnabled: true,
+    classes: 'highlighted',
   },
   {
     id: 1,
     text: 'Harry',
+    childrenEnabled: true,
     children: [
       {
         id: 2,
-        text: 'David'
+        text: 'David',
+        childrenEnabled: false,
       }
     ]
   },
   {
     id: 3,
     text: 'Lisa',
+    childrenEnabled: true,
     children: [
       {
         id: 4,
-        text: 'Richard'
+        text: 'Richard',
+        childrenEnabled: true,
       }
     ]
   }

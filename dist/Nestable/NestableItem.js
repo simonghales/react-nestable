@@ -79,8 +79,10 @@ var NestableItem = function (_Component) {
 
       var Handler = void 0;
 
+      var classes = item.classes ? item.classes : '';
+
       var itemProps = {
-        className: (0, _classnames2.default)("nestable-item" + (isCopy ? '-copy' : ''), "nestable-item" + (isCopy ? '-copy' : '') + '-' + item.id, {
+        className: (0, _classnames2.default)("nestable-item" + (isCopy ? '-copy' : ''), "nestable-item" + (isCopy ? '-copy' : '') + '-' + item.id, [classes], {
           'is-dragging': isDragging
         })
       };

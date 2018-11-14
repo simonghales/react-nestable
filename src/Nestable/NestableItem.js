@@ -39,10 +39,13 @@ class NestableItem extends Component {
 
     let Handler;
 
+    const classes = item.classes ? item.classes : '';
+
     let itemProps = {
       className: cn(
         "nestable-item" + (isCopy ? '-copy' : ''),
         "nestable-item" + (isCopy ? '-copy' : '') + '-' + item.id,
+        [classes],
         {
           'is-dragging': isDragging
         }
