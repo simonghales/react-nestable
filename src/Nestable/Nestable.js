@@ -157,8 +157,6 @@ class Nestable extends Component {
     // so update next coordinates accordingly
     const realPathTo = this.getRealNextPath(pathFrom, pathTo);
 
-    const parent = this.getItemByPath(realPathTo.slice(0, -1));
-
     const removePath = this.getSplicePath(pathFrom, {
       numToRemove: 1,
       childrenProp: childrenProp
@@ -172,6 +170,8 @@ class Nestable extends Component {
 
     items = update(items, removePath);
     items = update(items, insertPath);
+
+    const parent = this.getItemByPath(realPathTo.slice(0, -1), items);
 
     this.setState({
       items,

@@ -334,8 +334,6 @@ var Nestable = function (_Component) {
 
       var realPathTo = this.getRealNextPath(pathFrom, pathTo);
 
-      var parent = this.getItemByPath(realPathTo.slice(0, -1));
-
       var removePath = this.getSplicePath(pathFrom, {
         numToRemove: 1,
         childrenProp: childrenProp
@@ -349,6 +347,8 @@ var Nestable = function (_Component) {
 
       items = (0, _reactAddonsUpdate2.default)(items, removePath);
       items = (0, _reactAddonsUpdate2.default)(items, insertPath);
+
+      var parent = this.getItemByPath(realPathTo.slice(0, -1), items);
 
       this.setState(_extends({
         items: items,

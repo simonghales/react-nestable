@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "0e4185f8507c882e8b74"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "6e27abf0c559973cf56c"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -11454,8 +11454,6 @@
 	
 	      var realPathTo = this.getRealNextPath(pathFrom, pathTo);
 	
-	      var parent = this.getItemByPath(realPathTo.slice(0, -1));
-	
 	      var removePath = this.getSplicePath(pathFrom, {
 	        numToRemove: 1,
 	        childrenProp: childrenProp
@@ -11469,6 +11467,8 @@
 	
 	      items = (0, _reactAddonsUpdate2.default)(items, removePath);
 	      items = (0, _reactAddonsUpdate2.default)(items, insertPath);
+	
+	      var parent = this.getItemByPath(realPathTo.slice(0, -1), items);
 	
 	      this.setState(_extends({
 	        items: items,
