@@ -46,7 +46,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint-disable no-console */
+
 
 var Nestable = function (_Component) {
   _inherits(Nestable, _Component);
@@ -136,6 +137,10 @@ var Nestable = function (_Component) {
 
       _this.stopTrackMouse();
       _this.el = null;
+
+      _this.setState({
+        parentId: null
+      });
 
       isCancel ? _this.dragRevert() : _this.dragApply();
     };
@@ -249,7 +254,8 @@ var Nestable = function (_Component) {
       itemsOld: null, // snap copy in case of canceling drag
       dragItem: null,
       isDirty: false,
-      collapsedGroups: []
+      collapsedGroups: [],
+      parentId: null
     };
 
     _this.el = null;
@@ -328,6 +334,8 @@ var Nestable = function (_Component) {
 
       var realPathTo = this.getRealNextPath(pathFrom, pathTo);
 
+      var parent = this.getItemByPath(realPathTo.slice(0, -1));
+
       var removePath = this.getSplicePath(pathFrom, {
         numToRemove: 1,
         childrenProp: childrenProp
@@ -344,7 +352,8 @@ var Nestable = function (_Component) {
 
       this.setState(_extends({
         items: items,
-        isDirty: true
+        isDirty: true,
+        parentId: parent ? parent.id : null
       }, extraProps));
     }
   }, {
@@ -362,9 +371,6 @@ var Nestable = function (_Component) {
       // has previous sibling and isn't at max depth
       if (itemIndex > 0 && newDepth <= maxDepth) {
         var prevSibling = this.getItemByPath(pathFrom.slice(0, -1).concat(itemIndex - 1));
-
-        // eslint-disable-next-line no-console
-        console.log('prevSibling', prevSibling);
 
         if (!prevSibling.childrenEnabled) {
           return;
@@ -629,7 +635,8 @@ var Nestable = function (_Component) {
     value: function render() {
       var _state2 = this.state,
           items = _state2.items,
-          dragItem = _state2.dragItem;
+          dragItem = _state2.dragItem,
+          parentId = _state2.parentId;
       var group = this.props.group;
 
       var options = this.getItemOptions();
@@ -645,7 +652,8 @@ var Nestable = function (_Component) {
               key: i,
               index: i,
               item: item,
-              options: options
+              options: options,
+              parentHoverId: parentId
             });
           })
         ),

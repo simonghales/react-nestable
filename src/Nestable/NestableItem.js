@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+/* eslint-disable no-console */
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 
@@ -11,10 +12,11 @@ class NestableItem extends Component {
     }),
     isCopy: PropTypes.bool,
     options: PropTypes.object,
+    parentHoverId: PropTypes.number,
     index: PropTypes.number
   };
 
-  renderCollapseIcon = ({ isCollapsed }) => (
+  renderCollapseIcon = ({isCollapsed}) => (
     <Icon
       className={cn("nestable-item-icon", {
         "icon-plus-gray": isCollapsed,
@@ -24,7 +26,7 @@ class NestableItem extends Component {
   );
 
   render() {
-    const { item, isCopy, options, index } = this.props;
+    const {item, isCopy, parentHoverId, options, index} = this.props;
     const {
       dragItem,
       renderItem,
@@ -47,7 +49,8 @@ class NestableItem extends Component {
         "nestable-item" + (isCopy ? '-copy' : '') + '-' + item.id,
         [classes],
         {
-          'is-dragging': isDragging
+          'is-dragging': isDragging,
+          'is-hovered': item.id === parentHoverId,
         }
       )
     };
@@ -70,7 +73,7 @@ class NestableItem extends Component {
     }
 
     if (handler) {
-      Handler = <span className="nestable-item-handler" {...handlerProps}>{handler}</span>;
+      Handler = <span className='nestable-item-handler' {...handlerProps}>{handler}</span>;
       //Handler = React.cloneElement(handler, handlerProps);
     } else {
       rowProps = {
@@ -82,19 +85,19 @@ class NestableItem extends Component {
     const collapseIcon = hasChildren
       ? (
         <span onClick={() => options.onToggleCollapse(item)}>
-          {renderCollapseIcon({ isCollapsed })}
+          {renderCollapseIcon({isCollapsed})}
         </span>
       )
       : null;
 
     return (
       <li {...itemProps}>
-        <div className="nestable-item-name" {...rowProps}>
-          {renderItem({ item, collapseIcon, handler: Handler, index })}
+        <div className='nestable-item-name' {...rowProps}>
+          {renderItem({item, collapseIcon, handler: Handler, index})}
         </div>
 
         {hasChildren && !isCollapsed && (
-          <ol className="nestable-list">
+          <ol className='nestable-list'>
             {item[childrenProp].map((item, i) => {
               return (
                 <NestableItem
@@ -103,6 +106,7 @@ class NestableItem extends Component {
                   item={item}
                   options={options}
                   isCopy={isCopy}
+                  parentHoverId={parentHoverId}
                 />
               );
             })}

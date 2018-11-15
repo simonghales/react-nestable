@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import shallowCompare from 'react-addons-shallow-compare';
@@ -25,7 +26,8 @@ class Nestable extends Component {
       itemsOld: null, // snap copy in case of canceling drag
       dragItem: null,
       isDirty: false,
-      collapsedGroups: []
+      collapsedGroups: [],
+      parentId: null,
     };
 
     this.el = null;
@@ -155,6 +157,7 @@ class Nestable extends Component {
     // so update next coordinates accordingly
     const realPathTo = this.getRealNextPath(pathFrom, pathTo);
 
+    const parent = this.getItemByPath(realPathTo.slice(0, -1));
 
     const removePath = this.getSplicePath(pathFrom, {
       numToRemove: 1,
@@ -173,6 +176,7 @@ class Nestable extends Component {
     this.setState({
       items,
       isDirty: true,
+      parentId: parent ? parent.id : null,
       ...extraProps
     });
   }
@@ -186,9 +190,6 @@ class Nestable extends Component {
     // has previous sibling and isn't at max depth
     if (itemIndex > 0 && newDepth <= maxDepth) {
       const prevSibling = this.getItemByPath(pathFrom.slice(0, -1).concat(itemIndex - 1));
-
-      // eslint-disable-next-line no-console
-      console.log('prevSibling', prevSibling);
 
       if (!prevSibling.childrenEnabled) {
         return;
@@ -209,7 +210,7 @@ class Nestable extends Component {
           collapseProps = this.onToggleCollapse(prevSibling, true);
         }
 
-        this.moveItem({dragItem, pathFrom, pathTo}, collapseProps);
+        this.moveItem({dragItem, pathFrom, pathTo}, collapseProps,);
       }
     }
   }
@@ -429,6 +430,10 @@ class Nestable extends Component {
     this.stopTrackMouse();
     this.el = null;
 
+    this.setState({
+      parentId: null,
+    });
+
     isCancel
       ? this.dragRevert()
       : this.dragApply();
@@ -573,7 +578,7 @@ class Nestable extends Component {
   }
 
   render() {
-    const {items, dragItem} = this.state;
+    const {items, dragItem, parentId} = this.state;
     const {group} = this.props;
     const options = this.getItemOptions();
 
@@ -587,6 +592,7 @@ class Nestable extends Component {
                 index={i}
                 item={item}
                 options={options}
+                parentHoverId={parentId}
               />
             );
           })}

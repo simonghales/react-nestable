@@ -30,7 +30,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint-disable no-console */
+
 
 var NestableItem = function (_Component) {
   _inherits(NestableItem, _Component);
@@ -63,6 +64,7 @@ var NestableItem = function (_Component) {
       var _props = this.props,
           item = _props.item,
           isCopy = _props.isCopy,
+          parentHoverId = _props.parentHoverId,
           options = _props.options,
           index = _props.index;
       var dragItem = options.dragItem,
@@ -83,7 +85,8 @@ var NestableItem = function (_Component) {
 
       var itemProps = {
         className: (0, _classnames2.default)("nestable-item" + (isCopy ? '-copy' : ''), "nestable-item" + (isCopy ? '-copy' : '') + '-' + item.id, [classes], {
-          'is-dragging': isDragging
+          'is-dragging': isDragging,
+          'is-hovered': item.id === parentHoverId
         })
       };
 
@@ -142,7 +145,8 @@ var NestableItem = function (_Component) {
               index: i,
               item: item,
               options: options,
-              isCopy: isCopy
+              isCopy: isCopy,
+              parentHoverId: parentHoverId
             });
           })
         )
@@ -159,6 +163,7 @@ NestableItem.propTypes = {
   }),
   isCopy: _propTypes2.default.bool,
   options: _propTypes2.default.object,
+  parentHoverId: _propTypes2.default.number,
   index: _propTypes2.default.number
 };
 exports.default = NestableItem;
